@@ -1,0 +1,77 @@
+﻿@model List<Car>
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using (Html.BeginForm()) {
+
+<html>
+<head>
+    <title>Add Map</title>
+
+    <style type="text/css">
+   
+        #map {
+            height: 400px;
+            width: 100%;
+        
+        }
+    </style>
+    <script>
+
+        function initMap() {
+          
+            const stockholm = { lat: 59.334591, lng: 18.063240 };
+     
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 4,
+                center: stockholm,
+            });
+
+            // The marker, positioned at Uluru
+           @foreach (var loc in Model)
+           {
+
+               @: var marker = new google.maps.Marker({ position: { lat: @loc.lat, lng: @loc.lon },map: map, title: 'Istanbul' });
+           
+
+           }
+        }
+    </script>
+</head>
+<body>
+    <h3>MY MAP</h3>
+    <!--The div element for the map -->
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfk417LfbRbJxtx9Ao_d031ICjyhe5CeM&callback=initMap&libraries=&v=weekly"
+            async></script>
+</body>
+<body>
+
+    @using (Html.BeginForm("CheckRadio", "Map", FormMethod.Post))
+    {
+    <div>
+        Select the car you wanna view: <br />
+
+        @ViewBag.ID[0]<input type="radio" name="car1" value="car1" />
+        @ViewBag.ID[1]<input type="radio" name="car2" value="car2" />
+
+        <input type="text" name="startBox" placeholder="Enter start date"/>
+        <input type="text" name="finishBox"placeholder="Enter finish date" />
+       Today's date <input type="text" name="dateBox" value=@ViewBag.now />
+        <input type="submit" formaction="logout" value="Logout" ></input>
+
+
+
+    </div>
+
+    <input type="submit" value="Search" />
+   
+        }
+</body>
+</html>
+}
